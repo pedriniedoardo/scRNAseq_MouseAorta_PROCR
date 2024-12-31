@@ -22,7 +22,7 @@ library(homologene)
 # read in the data --------------------------------------------------------
 data.combined <- readRDS("../../out/object/data.combined_harmonySkipIntegration.rds")
 DimPlot(data.combined)
-Idents(data.combined)<-"seurat_clusters"
+# Idents(data.combined)<-"seurat_clusters"
 
 # read in the LUT for homologenes
 # library(homologene)
@@ -94,12 +94,11 @@ df_test <- lapply(shortlist_features_list_long_mouse,function(x){
 
 head(df_test)
 
-
 # plot the shortlisted feature per cluster
 # notice that this is done only on the subset of the young (control) cells
 test_long01 <- df_test %>%
   # force the order
-  mutate(id = factor(id,levels = c(9,5,6,3,2,7,4,8,0,1,10))) %>% 
+  mutate(id = factor(id,levels = c(9,6,5,3,2,8,4,7,0,1))) %>% 
   mutate(cell_type = factor(cell_type,levels = c("Bc","Tc","RBc","FIBRO","MAC","DC","ENDO"))) %>% 
   ggplot(aes(x = features.plot,y = id)) +
   geom_point(aes(size = pct.exp, col = avg.exp.scaled))+
@@ -112,38 +111,37 @@ test_long01 <- df_test %>%
   scale_color_gradient(low = "lightgrey",high = "blue",limits = c(-1,2),oob = scales::squish)
 ggsave(plot=test_long01,"../../out/plot/02_DotplotLong_res0.4.pdf",width = 10,height = 5)
 
+# try to convey the the classification using also the UMAP and the score module
+# seu.int <- AddModuleScore(seu.int, features = sig.list, name = "_score")
+# names(seu.int@meta.data)[grep("_score", names(seu.int@meta.data))] <- names(sig.list)
+# FeaturePlot(seu.int, features = names(sig.list))
 
-# # try to convey the the classification using also the UMAP and the score module
-# # seu.int <- AddModuleScore(seu.int, features = sig.list, name = "_score")
-# # names(seu.int@meta.data)[grep("_score", names(seu.int@meta.data))] <- names(sig.list)
-# # FeaturePlot(seu.int, features = names(sig.list))
-# 
-# # Rename using a named vector and `all_of()`
-# data.combined <- Seurat::AddModuleScore(data.combined,
-#                                         features = shortlist_features_list_long,
-#                                         name = "_score")
-# 
-# df_rename <- data.frame(names = data.combined@meta.data %>%
-#                           colnames() %>%
-#                           str_subset("_score"),
-#                         rename = paste0("score_",names(shortlist_features_list_long)))
-# 
-# lookup <- df_rename$names
-# names(lookup) <- df_rename$rename
-# 
-# # rename the columns
-# data.combined@meta.data <- dplyr::rename(data.combined@meta.data,all_of(lookup))
-# 
-# # plot the scores from AddModuleScore
-# list_plot_02 <- lapply(df_rename$rename,function(x){
-#   plot <- FeaturePlot(data.combined,features = x,order = T,
-#                       reduction = "umap",
-#                       raster = T) + scale_color_viridis_c(option = "turbo")
-#   return(plot)
-# })
-# 
-# wrap_plots(list_plot_02)
-# ggsave("../../out/plot/UMAPCluster_ExpertAnnotaiton.pdf",width = 20,height = 15)
+# Rename using a named vector and `all_of()`
+data.combined <- Seurat::AddModuleScore(data.combined,
+                                        features = shortlist_features_list_long_mouse,
+                                        name = "_score")
+
+df_rename <- data.frame(names = data.combined@meta.data %>%
+                          colnames() %>%
+                          str_subset("_score"),
+                        rename = paste0("score_",names(shortlist_features_list_long_mouse)))
+
+lookup <- df_rename$names
+names(lookup) <- df_rename$rename
+
+# rename the columns
+data.combined@meta.data <- dplyr::rename(data.combined@meta.data,all_of(lookup))
+
+# plot the scores from AddModuleScore
+list_plot_02 <- lapply(df_rename$rename,function(x){
+  plot <- FeaturePlot(data.combined,features = x,order = T,
+                      reduction = "umap",
+                      raster = F) + scale_color_viridis_c(option = "inferno")
+  return(plot)
+})
+
+wrap_plots(list_plot_02)
+ggsave("../../out/plot/02_UMAPCluster_ExpertAnnotaiton.pdf",width = 15,height = 15)
 # 
 # # same as above but as violin plot
 # list_plot <- lapply(df_rename$rename, function(x){ 
@@ -250,23 +248,23 @@ df_plot_violin_technical %>%
   geom_hline(data = df_plot_violin_technical_summary,aes(yintercept = med_score),linetype="dashed",col="red") +
   theme(strip.background = element_blank(),
         axis.text.x = element_text(hjust = 1,angle = 45))
-ggsave("../../out/plot/ViolinCluster_technical.pdf",width = 7,height = 12)
+ggsave("../../out/plot/02_ViolinCluster_technical_res0.4.pdf",width = 7,height = 12)
 
-# pick one resolution onward 0.1
+# pick one resolution onward 0.4
 
 # main umap
-plot03 <- DimPlot(data.combined, reduction = "umap", group.by = "RNA_snn_res.0.1",label = T,raster = T)
-ggsave(plot=plot03,"../../out/plot/UMAPCluster_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 6,height = 5)
+plot03 <- DimPlot(data.combined, reduction = "umap", group.by = "RNA_snn_res.0.4",label = T,raster = F)
+ggsave(plot=plot03,"../../out/plot/02_UMAPCluster_data.combined_harmonySkipIntegration_res0.4.pdf",width = 6,height = 5)
 
-plot03a <- DimPlot(data.combined, reduction = "umap", group.by = "RNA_snn_res.0.1",label = T,raster = T,split.by = "Sample.paper",ncol = 5)
-ggsave(plot=plot03a,"../../out/plot/UMAPClusterSplit_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 13,height = 4)
+plot03a <- DimPlot(data.combined, reduction = "umap", group.by = "RNA_snn_res.0.4",label = T,raster = F,split.by = "orig.ident",ncol = 5)
+ggsave(plot=plot03a,"../../out/plot/02_UMAPClusterSplit_data.combined_harmonySkipIntegration_res0.4.pdf",width = 8,height = 4)
 
 # main umap cell cycle
-plot04 <- DimPlot(data.combined, reduction = "umap", group.by = "Phase",raster = T,order = T)
-ggsave(plot=plot04,"../../out/plot/UMAPPhase_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 5,height = 4)
+plot04 <- DimPlot(data.combined, reduction = "umap", group.by = "Phase",raster = F,order = T)
+ggsave(plot=plot04,"../../out/plot/02_UMAPPhase_data.combined_harmonySkipIntegration.pdf",width = 5,height = 4)
 
 # split by sample
-Idents(data.combined) <- "RNA_snn_res.0.1"
+Idents(data.combined) <- "RNA_snn_res.0.4"
 df_meta <- data.combined@meta.data %>%
   rownames_to_column("rowname")
 df_UMAP <- data.combined@reductions$umap@cell.embeddings %>%
@@ -275,50 +273,52 @@ df_UMAP <- data.combined@reductions$umap@cell.embeddings %>%
 
 # plot the proporition for the phase per cluster
 df_summary_phase <- df_meta %>%
-  group_by(RNA_snn_res.0.1,Phase) %>%
+  group_by(RNA_snn_res.0.4,Phase) %>%
   summarise(n = n()) %>%
-  group_by(RNA_snn_res.0.1) %>%
+  group_by(RNA_snn_res.0.4) %>%
   mutate(tot=sum(n)) %>%
   ungroup() %>%
   mutate(prop=n/tot)
 
 df_summary_phase %>%
-  mutate(RNA_snn_res.0.1 = fct_relevel(RNA_snn_res.0.1,as.character(0:12))) %>%
+  mutate(RNA_snn_res.0.4 = fct_relevel(RNA_snn_res.0.4,as.character(0:9))) %>%
   ggplot() +
-  geom_col(aes(x=RNA_snn_res.0.1,y=prop,fill=Phase))+theme_cowplot()+
+  geom_col(aes(x=RNA_snn_res.0.4,y=prop,fill=Phase))+theme_cowplot()+
   theme(axis.text.x = element_text(hjust = 1,angle = 90))
-ggsave("../../out/plot/BarplotPhase_summary_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 7,height = 6)
+ggsave("../../out/plot/02_BarplotPhase_summary_data.combined_harmonySkipIntegration_res0.4.pdf",width = 7,height = 6)
 
 # proportion of cell per cluster
 df_summary <- df_meta %>%
-  group_by(Sample.paper,RNA_snn_res.0.1) %>%
+  group_by(orig.ident,RNA_snn_res.0.4) %>%
   summarise(n = n()) %>%
-  group_by(Sample.paper) %>%
+  group_by(orig.ident) %>%
   mutate(tot=sum(n)) %>%
   ungroup() %>%
   mutate(prop=n/tot)
-write_tsv(df_summary,"../../out/table/summary_data.combined_harmonySkipIntegration_manualClean_res0.1.tsv")
+write_tsv(df_summary,"../../out/table/02_summary_data.combined_harmonySkipIntegration_res0.4.tsv")
 
-color_id <- alphabet(length(unique(df_summary$RNA_snn_res.0.1)))
+color_id <- alphabet(length(unique(df_summary$RNA_snn_res.0.4)))
 # check the colors
 show_col(color_id)
 
 df_summary %>%
   ggplot() +
-  geom_col(aes(x=Sample.paper,y=prop,fill=RNA_snn_res.0.1))+theme_cowplot()+
+  geom_col(aes(x=orig.ident,y=prop,fill=RNA_snn_res.0.4))+theme_cowplot()+
   theme(axis.text.x = element_text(hjust = 1,angle = 90)) +
   scale_fill_manual(values = unname(color_id))
-ggsave("../../out/plot/Barplot_summary_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 7,height = 6)
+ggsave("../../out/plot/02_Barplot_summary_data.combined_harmonySkipIntegration_res0.4.pdf",width = 7,height = 6)
 
 # render the same plot as an heatmap
 sample_prop_wide <- df_summary %>%
   # scale by rows
-  group_by(RNA_snn_res.0.1) %>%
+  group_by(RNA_snn_res.0.4) %>%
   mutate(zscore = (prop-mean(prop))/sd(prop)) %>%
   # make it long
-  dplyr::select(Sample.paper,RNA_snn_res.0.1,zscore) %>%
-  pivot_wider(names_from = Sample.paper,values_from = zscore,values_fill = 0) %>%
-  column_to_rownames("RNA_snn_res.0.1")
+  dplyr::select(orig.ident,RNA_snn_res.0.4,zscore) %>%
+  pivot_wider(names_from = orig.ident,values_from = zscore,values_fill = 0) %>%
+  # dplyr::select(orig.ident,RNA_snn_res.0.4,prop) %>%
+  # pivot_wider(names_from = orig.ident,values_from = prop,values_fill = 0) %>%
+  column_to_rownames("RNA_snn_res.0.4")
 
 rowSums(sample_prop_wide)
 colSums(sample_prop_wide)
@@ -341,9 +341,9 @@ colSums(sample_prop_wide)
 #                                                                       "Multiple sclerosis" = "red")))
 
 ht2_shr_MG2 <- Heatmap(sample_prop_wide, show_column_names = T,raster_by_magick = T,show_row_dend = F, use_raster = T,
-                       name = "zscore \nprop_cell_type \nscale cluster",
+                       name = "prop_cell_type \nscale cluster",
                        column_title = "sample",
-                       # col = viridis::viridis(option = "turbo",n = 10),
+                       col = viridis::viridis(option = "turbo",n = 10),
                        
                        # row_names_gp = gpar(fontsize = 3),
                        # top_annotation = column_meta_sample_prop,
@@ -353,19 +353,19 @@ ht2_shr_MG2 <- Heatmap(sample_prop_wide, show_column_names = T,raster_by_magick 
                        # row_split = rep(c(1,2,3,4),c(2,3,4,7))
                        
 )
-pdf("../../out/plot/HeatmapCluster_summary_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 3,height = 6)
+# pdf("../../out/plot/HeatmapCluster_summary_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 3,height = 6)
 draw(ht2_shr_MG2,heatmap_legend_side = "left",annotation_legend_side = "left",padding = unit(c(30,2,2, 2), "mm"))
-dev.off()
+# dev.off()
 
 # render the same plot as an heatmap
 sample_prop_wide2 <- df_summary %>%
   # scale by rows
-  group_by(Sample.paper) %>%
+  group_by(orig.ident) %>%
   mutate(zscore = (prop-mean(prop))/sd(prop)) %>%
   # make it long
-  dplyr::select(Sample.paper,RNA_snn_res.0.1,zscore) %>%
-  pivot_wider(names_from = Sample.paper,values_from = zscore,values_fill = 0) %>%
-  column_to_rownames("RNA_snn_res.0.1")
+  dplyr::select(orig.ident,RNA_snn_res.0.4,zscore) %>%
+  pivot_wider(names_from = orig.ident,values_from = zscore,values_fill = 0) %>%
+  column_to_rownames("RNA_snn_res.0.4")
 
 rowSums(sample_prop_wide2)
 colSums(sample_prop_wide2)
@@ -390,7 +390,7 @@ colSums(sample_prop_wide2)
 ht2_shr_MG22 <- Heatmap(sample_prop_wide2, show_column_names = T,raster_by_magick = T,show_row_dend = F, use_raster = T,
                         name = "zscore \nprop_cell_type \nscale sample",
                         column_title = "sample",
-                        # col = viridis::viridis(option = "turbo",n = 10),
+                        col = viridis::viridis(option = "turbo",n = 10),
                         
                         # row_names_gp = gpar(fontsize = 3),
                         # top_annotation = column_meta_sample_prop2,
@@ -400,9 +400,9 @@ ht2_shr_MG22 <- Heatmap(sample_prop_wide2, show_column_names = T,raster_by_magic
                         # row_split = rep(c(1,2,3,4),c(2,3,4,7))
                         
 )
-pdf("../../out/plot/HeatmapSample_summary_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 3,height = 6)
+# pdf("../../out/plot/HeatmapSample_summary_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 3,height = 6)
 draw(ht2_shr_MG22,heatmap_legend_side = "left",annotation_legend_side = "left",padding = unit(c(30,2,2, 2), "mm"))
-dev.off()
+# dev.off()
 
 # Identify conserved cell type markers ------------------------------------
 # data
@@ -420,12 +420,12 @@ DefaultAssay(data.combined) <- "RNA"
 
 # find markers for every cluster compared to all remaining cells, report only the positive
 # ones
-Idents(data.combined) <- "RNA_snn_res.0.1"
+Idents(data.combined) <- "RNA_snn_res.0.4"
 sobj_total_h.markers <- RunPrestoAll(data.combined, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
 
 # save the table of all markers
 sobj_total_h.markers %>%
-  write_tsv("../../out/table/FindAllMarkers_data.combined_harmonySkipIntegration_manualClean_res0.1.tsv")
+  write_tsv("../../out/table/02_FindAllMarkers_data.combined_harmonySkipIntegration_res0.4.tsv")
 
 # # save the top 100
 # sobj_total_h.markers %>%
@@ -447,9 +447,110 @@ top_specific_markers <- sobj_total_h.markers %>%
 # And generate e.g. a dotplot:
 dittoSeq::dittoDotPlot(data.combined,
                        vars = unique(top_specific_markers$gene), 
-                       group.by = "RNA_snn_res.0.1")+scale_color_viridis_c(option = "turbo",name="relative \nexpression")
-ggsave("../../out/plot/TopMarkersDitto_data.combined_harmonySkipIntegration_manualClean_res0.1.pdf",width = 15,height = 6)
+                       group.by = "RNA_snn_res.0.4")+scale_color_viridis_c(option = "turbo",name="relative \nexpression")
+ggsave("../../out/plot/02_TopMarkersDitto_data.combined_harmonySkipIntegration_res0.4.pdf",width = 12,height = 4)
+
+# attempt annotation based on the results ---------------------------------
+data.combined@meta.data$expertAnno.l1 <- 
+  data.combined@meta.data %>%
+  mutate(expertAnno.l1 = case_when(RNA_snn_res.0.4 %in% c(9) ~ "Bc",
+                                   RNA_snn_res.0.4 %in% c(6) ~ "Tc",
+                                   RNA_snn_res.0.4 %in% c(5) ~ "RBc",
+                                   RNA_snn_res.0.4 %in% c(2,3) ~ "FIBRO",
+                                   RNA_snn_res.0.4 %in% c(8) ~ "MAC",
+                                   RNA_snn_res.0.4 %in% c(4) ~ "DC",
+                                   RNA_snn_res.0.4 %in% c(0,1,7) ~ "ENDO",
+                                   TRUE ~ "NA")) %>%
+  pull(expertAnno.l1)
+
+# main umap
+plot032 <- DimPlot(data.combined, reduction = "umap", group.by = "expertAnno.l1",label = T,raster = F)
+ggsave(plot=plot032,"../../out/plot/02_UMAPCluster_data.combined_harmonySkipIntegration_cellid.pdf",width = 6,height = 5)
+
+plot032a <- DimPlot(data.combined, reduction = "umap", group.by = "expertAnno.l1",label = T,raster = F,split.by = "orig.ident",ncol = 5)
+ggsave(plot=plot032a,"../../out/plot/02_UMAPClusterSplit_data.combined_harmonySkipIntegration_cellid.pdf",width = 8,height = 4)
+
+# split by sample
+Idents(data.combined) <- "expertAnno.l1"
+df_meta2 <- data.combined@meta.data %>%
+  rownames_to_column("rowname")
+df_UMAP2 <- data.combined@reductions$umap@cell.embeddings %>%
+  data.frame() %>%
+  rownames_to_column("rowname")
+
+# plot the proporition for the phase per cluster
+df_summary_phase2 <- df_meta2 %>%
+  group_by(expertAnno.l1,Phase) %>%
+  summarise(n = n()) %>%
+  group_by(expertAnno.l1) %>%
+  mutate(tot=sum(n)) %>%
+  ungroup() %>%
+  mutate(prop=n/tot)
+
+df_summary_phase2 %>%
+  mutate(expertAnno.l1 = fct_relevel(expertAnno.l1)) %>%
+  ggplot() +
+  geom_col(aes(x=expertAnno.l1,y=prop,fill=Phase))+theme_cowplot()+
+  theme(axis.text.x = element_text(hjust = 1,angle = 90))
+ggsave("../../out/plot/02_BarplotPhase_summary_data.combined_harmonySkipIntegration_cellid.pdf",width = 7,height = 6)
+
+# proportion of cell per cluster
+df_summary2 <- df_meta2 %>%
+  group_by(orig.ident,expertAnno.l1) %>%
+  summarise(n = n()) %>%
+  group_by(orig.ident) %>%
+  mutate(tot=sum(n)) %>%
+  ungroup() %>%
+  mutate(prop=n/tot)
+write_tsv(df_summary2,"../../out/table/02_summary_data.combined_harmonySkipIntegration_cellid.tsv")
+
+color_id2 <- alphabet(length(unique(df_summary2$expertAnno.l1)))
+# check the colors
+show_col(color_id2)
+
+df_summary2 %>%
+  ggplot() +
+  geom_col(aes(x=orig.ident,y=prop,fill=expertAnno.l1))+theme_cowplot()+
+  theme(axis.text.x = element_text(hjust = 1,angle = 90)) +
+  scale_fill_manual(values = unname(color_id))
+ggsave("../../out/plot/02_Barplot_summary_data.combined_harmonySkipIntegration_cellid.pdf",width = 7,height = 6)
+
+# calculate the ratio of the proportions per sample
+df_summary3 <- df_meta2 %>%
+  group_by(orig.ident,expertAnno.l1) %>%
+  summarise(n = n()) %>%
+  group_by(orig.ident) %>%
+  mutate(tot=sum(n)) %>%
+  ungroup() %>%
+  mutate(nCell_100k=n/tot*100000) %>%
+  ungroup() %>%
+  # pivot_wider(names_from = orig.ident,values_from = nCell_100k,id_cols = -c(n,tot),values_fill = 0) %>%
+  group_by(expertAnno.l1) %>%
+  mutate(sumCell_100k = sum(nCell_100k)) %>%
+  mutate(ratioCell_100k = nCell_100k/sumCell_100k) %>%
+  ungroup()
+write_tsv(df_summary3,"../../out/table/02_summary_data.combined_harmonySkipIntegration_cellid2.tsv")
+
+color_id3 <- c("black","gray")
+# check the colors
+show_col(color_id3)
+
+df_summary3 %>%
+  ggplot() +
+  geom_col(aes(x=expertAnno.l1,y=ratioCell_100k,fill=orig.ident))+theme_cowplot()+
+  theme(axis.text.x = element_text(hjust = 1,angle = 90)) +
+  scale_fill_manual(values = unname(color_id3))
+ggsave("../../out/plot/02_Barplot_summary_data.combined_harmonySkipIntegration_cellid3.pdf",width = 7,height = 6)
+
+# find markers for every cluster compared to all remaining cells, report only the positive
+# ones
+Idents(data.combined) <- "expertAnno.l1"
+sobj_total_h.markers2 <- RunPrestoAll(data.combined, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+
+# save the table of all markers
+sobj_total_h.markers2 %>%
+  write_tsv("../../out/table/02_FindAllMarkers_data.combined_harmonySkipIntegration_cellid.tsv")
 
 # save the object ---------------------------------------------------------
 # save the object with the full annotation
-saveRDS(data.combined,"../../out/object/data.combined_harmonySkipIntegration_manualClean_Annotation.rds")
+saveRDS(data.combined,"../../out/object/02_data.combined_harmonySkipIntegration_Annotation.rds")

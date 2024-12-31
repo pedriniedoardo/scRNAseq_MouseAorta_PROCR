@@ -231,31 +231,6 @@
       ],
       "Hash": "c7b4a49c7f435d0a67bb1e127e953d75"
     },
-    "GGally": {
-      "Package": "GGally",
-      "Version": "2.2.1",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "R",
-        "RColorBrewer",
-        "dplyr",
-        "ggplot2",
-        "ggstats",
-        "grDevices",
-        "grid",
-        "gtable",
-        "lifecycle",
-        "magrittr",
-        "plyr",
-        "progress",
-        "rlang",
-        "scales",
-        "tidyr",
-        "utils"
-      ],
-      "Hash": "b11ac45c916608b7d1374ff87da053d5"
-    },
     "GenomeInfoDb": {
       "Package": "GenomeInfoDb",
       "Version": "1.38.8",
@@ -327,19 +302,6 @@
         "utils"
       ],
       "Hash": "c3f7b221e60c28f5f3533d74c6fef024"
-    },
-    "HGNChelper": {
-      "Package": "HGNChelper",
-      "Version": "0.8.15",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "R",
-        "methods",
-        "splitstackshape",
-        "utils"
-      ],
-      "Hash": "388638086bf0876f13d281ff6a8c661d"
     },
     "IRanges": {
       "Package": "IRanges",
@@ -659,16 +621,6 @@
       ],
       "Hash": "1716e201f81ced0f456dd5ec85fe20f8"
     },
-    "SQUAREM": {
-      "Package": "SQUAREM",
-      "Version": "2021.1",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "0cf10dab0d023d5b46a5a14387556891"
-    },
     "ScaledMatrix": {
       "Package": "ScaledMatrix",
       "Version": "1.10.0",
@@ -861,24 +813,6 @@
       ],
       "Hash": "caee529bf9710ff6fe1776612fcaa266"
     },
-    "UpSetR": {
-      "Package": "UpSetR",
-      "Version": "1.4.0",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "R",
-        "ggplot2",
-        "grDevices",
-        "gridExtra",
-        "methods",
-        "plyr",
-        "scales",
-        "stats",
-        "utils"
-      ],
-      "Hash": "f6ef89503aaff474873f8bc1823894e1"
-    },
     "XVector": {
       "Package": "XVector",
       "Version": "0.42.0",
@@ -907,25 +841,6 @@
       ],
       "Hash": "2288423bb0f20a457800d7fc47f6aa54"
     },
-    "ashr": {
-      "Package": "ashr",
-      "Version": "2.2-63",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "Matrix",
-        "R",
-        "Rcpp",
-        "SQUAREM",
-        "etrunct",
-        "graphics",
-        "invgamma",
-        "mixsqp",
-        "stats",
-        "truncnorm"
-      ],
-      "Hash": "d5b252e570ccffbc8fec77827c585635"
-    },
     "askpass": {
       "Package": "askpass",
       "Version": "1.2.1",
@@ -935,19 +850,6 @@
         "sys"
       ],
       "Hash": "c39f4155b3ceb1a9a2799d700fbd4b6a"
-    },
-    "babelgene": {
-      "Package": "babelgene",
-      "Version": "22.9",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "R",
-        "dplyr",
-        "methods",
-        "rlang"
-      ],
-      "Hash": "8288e81d0c2c3272603f6ef394ffa6fd"
     },
     "backports": {
       "Package": "backports",
@@ -1347,19 +1249,6 @@
       ],
       "Hash": "38bbf05fc2503143db4c734a7e5cab66"
     },
-    "data.tree": {
-      "Package": "data.tree",
-      "Version": "1.1.0",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "R",
-        "R6",
-        "methods",
-        "stringi"
-      ],
-      "Hash": "d7602f0f55e0335b83f2353337848d6f"
-    },
     "dbplyr": {
       "Package": "dbplyr",
       "Version": "2.5.0",
@@ -1524,13 +1413,6 @@
         "vctrs"
       ],
       "Hash": "54ed3ea01b11e81a86544faaecfef8e2"
-    },
-    "etrunct": {
-      "Package": "etrunct",
-      "Version": "0.1",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Hash": "d1cdcd7d3ee4de411b7a29877a5e322a"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -1888,28 +1770,6 @@
         "withr"
       ],
       "Hash": "66488692cb8621bc78df1b9b819497a6"
-    },
-    "ggstats": {
-      "Package": "ggstats",
-      "Version": "0.7.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "cli",
-        "dplyr",
-        "forcats",
-        "ggplot2",
-        "lifecycle",
-        "patchwork",
-        "purrr",
-        "rlang",
-        "scales",
-        "stats",
-        "stringr",
-        "tidyr"
-      ],
-      "Hash": "95296256ea213cdd58601260893d0fc7"
     },
     "globals": {
       "Package": "globals",
@@ -2275,13 +2135,6 @@
       ],
       "Hash": "9a93b743b2461ba06ba3b5df12011145"
     },
-    "invgamma": {
-      "Package": "invgamma",
-      "Version": "1.1",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Hash": "d124cd1623454d8aeaaec5d67cf1d146"
-    },
     "irlba": {
       "Package": "irlba",
       "Version": "2.3.5.1",
@@ -2580,21 +2433,6 @@
       ],
       "Hash": "fec5f52652d60615fdb3957b3d74324a"
     },
-    "mixsqp": {
-      "Package": "mixsqp",
-      "Version": "0.3-54",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "R",
-        "Rcpp",
-        "RcppArmadillo",
-        "irlba",
-        "stats",
-        "utils"
-      ],
-      "Hash": "62896dd832ccbf1091e7f13324c24160"
-    },
     "modelr": {
       "Package": "modelr",
       "Version": "0.1.11",
@@ -2612,22 +2450,6 @@
         "vctrs"
       ],
       "Hash": "4f50122dc256b1b6996a4703fecea821"
-    },
-    "msigdbr": {
-      "Package": "msigdbr",
-      "Version": "7.5.1",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "R",
-        "babelgene",
-        "dplyr",
-        "magrittr",
-        "rlang",
-        "tibble",
-        "tidyselect"
-      ],
-      "Hash": "2def1d52dfe1044f82e75d25fb5dd2e5"
     },
     "munsell": {
       "Package": "munsell",
@@ -2663,23 +2485,6 @@
         "askpass"
       ],
       "Hash": "5bfe2927efa9f87766ca9605301ea48f"
-    },
-    "openxlsx": {
-      "Package": "openxlsx",
-      "Version": "4.2.7.1",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "R",
-        "Rcpp",
-        "grDevices",
-        "methods",
-        "stats",
-        "stringi",
-        "utils",
-        "zip"
-      ],
-      "Hash": "14304e44a0f90fa2d0f905472333c561"
     },
     "pals": {
       "Package": "pals",
@@ -2846,6 +2651,33 @@
         "R"
       ],
       "Hash": "5879bf5aae702ffef0a315c44328f984"
+    },
+    "presto": {
+      "Package": "presto",
+      "Version": "1.0.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "immunogenomics",
+      "RemoteRepo": "presto",
+      "RemoteRef": "master",
+      "RemoteSha": "7636b3d0465c468c35853f82f1717d3a64b3c8f6",
+      "Requirements": [
+        "Matrix",
+        "R",
+        "Rcpp",
+        "RcppArmadillo",
+        "data.table",
+        "dplyr",
+        "methods",
+        "purrr",
+        "rlang",
+        "stats",
+        "tibble",
+        "tidyr",
+        "utils"
+      ],
+      "Hash": "68068c5934b821e06dea1d4255e9dc0c"
     },
     "prettyunits": {
       "Package": "prettyunits",
@@ -3583,17 +3415,6 @@
       ],
       "Hash": "39a7d631e6d974f2ac6002c14ac4d2c8"
     },
-    "splitstackshape": {
-      "Package": "splitstackshape",
-      "Version": "1.4.8",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "R",
-        "data.table"
-      ],
-      "Hash": "69b26ceb9f7976f347049b4d470c2d65"
-    },
     "stringi": {
       "Package": "stringi",
       "Version": "1.8.4",
@@ -3821,16 +3642,6 @@
       ],
       "Hash": "3ec7e3ddcacc2d34a9046941222bf94d"
     },
-    "truncnorm": {
-      "Package": "truncnorm",
-      "Version": "1.0-9",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "ef5b32c5194351ff409dfb37ca9468f1"
-    },
     "tweenr": {
       "Package": "tweenr",
       "Version": "2.0.3",
@@ -4026,13 +3837,6 @@
       "Source": "Repository",
       "Repository": "P3M",
       "Hash": "51dab85c6c98e50a18d7551e9d49f76c"
-    },
-    "zip": {
-      "Package": "zip",
-      "Version": "2.3.1",
-      "Source": "Repository",
-      "Repository": "P3M",
-      "Hash": "fcc4bd8e6da2d2011eb64a5e5cc685ab"
     },
     "zlibbioc": {
       "Package": "zlibbioc",
